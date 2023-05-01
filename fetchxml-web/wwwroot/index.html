@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FetchXml to SQL Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/site.css" />
+</head>
+
+<body>
+
+   <header class="container">
+      <h2>FetchXml to SQL Converter</h2>
+   </header>
+
+   <div class="container" id="editor">
+      <main role="main">
+         <button v-on:click="convert" class="btn-primary">Convert to SQL</button>
+         <div class="pb-1 pt-2">
+            <textarea v-model="input" class="editor" rows="10" placeholder="FetchXML text goes here ..."></textarea>
+         </div>
+         <button v-on:click="convert" class="btn-primary">Convert to SQL</button>
+         <div v-if="SQL" class="pb-1 pt-2">
+            <hr />
+            <div>Converted SQL:</div>
+            <pre>{{ SQL }}</pre>
+         </div>
+         <div v-if="ErrorStatus" class="error pb-1 pt-2">
+            <pre>{{ ErrorStatus }}</pre>
+         </div>
+      </main>
+   </div>
+
+   <footer class="border-top footer text-muted">
+      <div class="container">
+         &copy; 2021
+      </div>
+   </footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+   <script src="js/site.js"></script>
+
+</body>
+
+</html>
