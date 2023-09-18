@@ -10,7 +10,20 @@ namespace FetchXml.Dialect
     {
         public string EscapeIdentifier(string value) => $"[{value}]";
 
-        public string EscapeStringValue(string value) => $"'{value}'";
+
+        public string EscapeStringValue(string value)
+        {
+            // spcical case for number and boolean value. Risks here, but I have no other way unless we check the table schema first.
+            if (int.TryParse(value, out int number))
+                return value;
+            // special case for Guid value. In CRM2016 generated FetchXML, Guid value is expressed as {GUID},
+            // but in sql server, Guid is not wrapped in curly braces.
+            else if (System.Guid.TryParse(value, out var gx))
+                return $"'{gx}'";
+            
+            return $"'{value}'";
+        }
+
 
         public string EscapeStringValues(IEnumerable<string> values) 
         {
@@ -24,8 +37,9 @@ namespace FetchXml.Dialect
             switch(operatorId)
             {
                 case "eq": return $"{lhs} = {EscapeStringValue(rhs)}";
-                case "ne": return $"{lhs} != {EscapeStringValue(rhs)}";
-                case "neq": return $"{lhs} != {EscapeStringValue(rhs)}";
+                // ne/neq have include null values
+                case "ne": return $"( {lhs} != {EscapeStringValue(rhs)} or {lhs} is null )";
+                case "neq": return $"( {lhs} != {EscapeStringValue(rhs)} or {lhs} is null )";
                 case "lt": return $"{lhs} < {EscapeStringValue(rhs)}";
                 case "le": return $"{lhs} <= {EscapeStringValue(rhs)}";
                 case "gt": return $"{lhs} > {EscapeStringValue(rhs)}";

@@ -365,8 +365,22 @@ namespace FetchXml.Model
         [XmlAttributeAttribute("alias")]
         public string Alias { get; set; }
 
+        [XmlIgnoreAttribute()]
+        private string _link_Type = "inner";
+
+        [DefaultValueAttribute("inner")]
         [XmlAttributeAttribute("link-type")]
-        public string Link_Type { get; set; }
+        public string Link_Type
+        {
+            get
+            {
+                return _link_Type;
+            }
+            set
+            {
+                _link_Type = value;
+            }
+        }
 
         [XmlAttributeAttribute("visible")]
         public bool Visible { get; set; }
